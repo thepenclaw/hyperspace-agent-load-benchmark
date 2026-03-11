@@ -128,6 +128,8 @@ def resolved_config():
         headers["x-api-key"] = api_key
 
     cfg["headers"] = headers
+    cfg["username"] = os.getenv("HYPERSPACE_USERNAME")
+    cfg["password"] = os.getenv("HYPERSPACE_PASSWORD")
 
     endpoint_list = os.getenv("HYPERSPACE_ENDPOINTS")
     if endpoint_list:
@@ -138,13 +140,13 @@ def resolved_config():
     return cfg, profile, targets
 
 
-def one_request(session, url, method, headers, payload, timeout):
+def one_request(session, url, method, headers, payload, timeout, auth=None):
     start = time.perf_counter()
     try:
         if method == "POST":
-            response = session.post(url, json=payload, headers=headers, timeout=timeout)
+            response = session.post(url, json=payload, headers=headers, timeout=timeout, auth=auth)
         else:
-            response = session.get(url, headers=headers, timeout=timeout)
+            response = session.get(url, headers=headers, timeout=timeout, auth=auth)
         elapsed = (time.perf_counter() - start) * 1000
         return {
             "ok": response.ok,
@@ -191,11 +193,11 @@ def collect_host_stats(enabled):
         }
 
 
-def preflight(session, url, method, headers, payload, timeout):
-    return one_request(session, url, method, headers, payload, timeout)
+def preflight(session, url, method, headers, payload, timeout, auth):
+    return one_request(session, url, method, headers, payload, timeout, auth=auth)
 
 
-def run_load(session, url, method, headers, payload, timeout, profile):
+def run_load(session, url, method, headers, payload, timeout, profile, auth):
     mode = profile["mode"]
     target_count = profile["total_requests"]
     duration_seconds = profile["duration_seconds"]
@@ -216,7 +218,9 @@ def run_load(session, url, method, headers, payload, timeout, profile):
         in_flight = set()
 
         while len(in_flight) < max_workers and should_submit_more():
-            in_flight.add(executor.submit(one_request, session, url, method, headers, payload, timeout))
+            in_flight.add(
+                executor.submit(one_request, session, url, method, headers, payload, timeout, auth)
+            )
             submitted += 1
 
         while in_flight:
@@ -226,7 +230,9 @@ def run_load(session, url, method, headers, payload, timeout, profile):
                 results.append(completed.result())
                 if should_submit_more():
                     in_flight.add(
-                        executor.submit(one_request, session, url, method, headers, payload, timeout)
+                        executor.submit(
+                            one_request, session, url, method, headers, payload, timeout, auth
+                        )
                     )
                     submitted += 1
 
@@ -238,6 +244,9 @@ def run_single_target(cfg, profile, endpoint):
     url = build_url(cfg["api_base"], endpoint)
     method = profile["method"].upper()
     timeout = cfg["request_timeout_seconds"]
+    auth = None
+    if cfg.get("username") and cfg.get("password"):
+        auth = (cfg["username"], cfg["password"])
 
     print("=" * 72)
     print(f"Hyperspace Load Cycle @ {now_iso()}")
@@ -261,6 +270,7 @@ def run_single_target(cfg, profile, endpoint):
             headers=cfg["headers"],
             payload=profile["payload"],
             timeout=timeout,
+            auth=auth,
         )
 
         for _ in range(max(cfg["warmup_requests"] - 1, 0)):
@@ -271,6 +281,7 @@ def run_single_target(cfg, profile, endpoint):
                 headers=cfg["headers"],
                 payload=profile["payload"],
                 timeout=timeout,
+                auth=auth,
             )
 
         results, wall_elapsed_s = run_load(
@@ -281,6 +292,7 @@ def run_single_target(cfg, profile, endpoint):
             payload=profile["payload"],
             timeout=timeout,
             profile=profile,
+            auth=auth,
         )
 
     success = [r for r in results if r["ok"]]
