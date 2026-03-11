@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-03-11T05:33:21.636252Z",
+  "config": {
+    "api_base": "https://agents.hyper.space",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    }
+  },
+  "load_profile": {
+    "mode": "duration",
+    "total_requests": 120,
+    "duration_seconds": 8,
+    "max_requests": 2000,
+    "concurrency": 8,
+    "method": "GET",
+    "endpoint": "/",
+    "payload": null
+  },
+  "targets": [
+    "/"
+  ],
+  "requests_total": 2000,
+  "requests_success": 2000,
+  "requests_failed": 0,
+  "success_rate": 1.0,
+  "wall_time_seconds": 6.076,
+  "observed_tps": 329.16,
+  "latency_ms_avg": 23.87,
+  "latency_ms_p50": 19.18,
+  "latency_ms_p95": 48.42,
+  "latency_ms_p99": 88.73,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": true,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": 5.5,
+    "mem_percent": 57.5,
+    "mem_used_mb": 8402.59
+  },
+  "target_results": [
+    {
+      "timestamp": "2026-03-11T05:33:21.320240Z",
+      "config": {
+        "api_base": "https://agents.hyper.space",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        }
+      },
+      "load_profile": {
+        "mode": "duration",
+        "total_requests": 120,
+        "duration_seconds": 8,
+        "max_requests": 2000,
+        "concurrency": 8,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/",
+      "requests_total": 2000,
+      "requests_success": 2000,
+      "requests_failed": 0,
+      "success_rate": 1.0,
+      "wall_time_seconds": 6.076,
+      "observed_tps": 329.14,
+      "latency_ms_avg": 23.87,
+      "latency_ms_p50": 19.18,
+      "latency_ms_p95": 48.42,
+      "latency_ms_p99": 88.73,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": true,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": 5.6,
+        "mem_percent": 57.5,
+        "mem_used_mb": 8402.58
+      },
+      "failure_examples": [],
+      "preflight": {
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 159.54,
+        "error": null
+      }
+    }
+  ]
+}

@@ -14,6 +14,7 @@ Evaluate distributed-system efficiency for Hyperspace-style agent endpoints by m
 
 - `run.py`: load test harness and metrics export
 - `auto_run.sh`: 10-cycle automation loop
+- `live_protocol.sh`: trial + repeated sweeps + soak protocol
 - `program.md`: agent mutation constraints
 - `results/`: per-cycle JSON logs
 - `results.tsv`: condensed cycle metrics
@@ -30,6 +31,12 @@ For automated cycles:
 
 ```bash
 ./auto_run.sh
+```
+
+For trial + repeated sweeps + soak:
+
+```bash
+./live_protocol.sh
 ```
 
 ## Configuration
@@ -66,6 +73,10 @@ Supported env vars:
 - `HYPERSPACE_TIMEOUT_SECONDS`
 - `HYPERSPACE_TARGET_FINALITY_MS`
 - `HYPERSPACE_TARGET_TPS`
+- `HYPERSPACE_MODE` (`count` or `duration`)
+- `HYPERSPACE_DURATION_SECONDS`
+- `HYPERSPACE_MAX_REQUESTS`
+- `HYPERSPACE_RESULTS_FILE`
 
 ## Output Schema (per cycle)
 

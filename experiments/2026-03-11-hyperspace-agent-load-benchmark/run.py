@@ -10,7 +10,7 @@ import json
 import os
 import statistics
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, as_completed, wait
 from datetime import datetime
 
 import requests
@@ -34,7 +34,10 @@ CONFIG = {
 
 # Single-change-per-cycle discipline: adjust one item at a time.
 LOAD_PROFILE = {
+    "mode": "count",  # count | duration
     "total_requests": 120,
+    "duration_seconds": 120,
+    "max_requests": 50000,
     "concurrency": 8,
     "method": "GET",
     "endpoint": "/",
@@ -98,9 +101,14 @@ def resolved_config():
     cfg["target_tps"] = _env_int("HYPERSPACE_TARGET_TPS", cfg["target_tps"])
 
     profile["total_requests"] = _env_int("HYPERSPACE_TOTAL_REQUESTS", profile["total_requests"])
+    profile["duration_seconds"] = _env_int(
+        "HYPERSPACE_DURATION_SECONDS", profile["duration_seconds"]
+    )
+    profile["max_requests"] = _env_int("HYPERSPACE_MAX_REQUESTS", profile["max_requests"])
     profile["concurrency"] = _env_int("HYPERSPACE_CONCURRENCY", profile["concurrency"])
     profile["method"] = os.getenv("HYPERSPACE_METHOD", profile["method"]).upper()
     profile["endpoint"] = os.getenv("HYPERSPACE_ENDPOINT", profile["endpoint"])
+    profile["mode"] = os.getenv("HYPERSPACE_MODE", profile["mode"]).lower()
 
     payload = _env_json("HYPERSPACE_PAYLOAD_JSON")
     if payload is not None:
@@ -183,6 +191,49 @@ def collect_host_stats(enabled):
         }
 
 
+def preflight(session, url, method, headers, payload, timeout):
+    return one_request(session, url, method, headers, payload, timeout)
+
+
+def run_load(session, url, method, headers, payload, timeout, profile):
+    mode = profile["mode"]
+    target_count = profile["total_requests"]
+    duration_seconds = profile["duration_seconds"]
+    max_requests = profile["max_requests"]
+    max_workers = max(profile["concurrency"], 1)
+
+    submitted = 0
+    results = []
+    end_time = time.perf_counter() + max(duration_seconds, 1)
+
+    def should_submit_more():
+        if mode == "duration":
+            return submitted < max_requests and time.perf_counter() < end_time
+        return submitted < target_count
+
+    wall_start = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        in_flight = set()
+
+        while len(in_flight) < max_workers and should_submit_more():
+            in_flight.add(executor.submit(one_request, session, url, method, headers, payload, timeout))
+            submitted += 1
+
+        while in_flight:
+            done, pending = wait(in_flight, return_when=FIRST_COMPLETED, timeout=0.5)
+            in_flight = set(pending)
+            for completed in done:
+                results.append(completed.result())
+                if should_submit_more():
+                    in_flight.add(
+                        executor.submit(one_request, session, url, method, headers, payload, timeout)
+                    )
+                    submitted += 1
+
+    wall_elapsed_s = max(time.perf_counter() - wall_start, 0.001)
+    return results, wall_elapsed_s
+
+
 def run_single_target(cfg, profile, endpoint):
     url = build_url(cfg["api_base"], endpoint)
     method = profile["method"].upper()
@@ -193,11 +244,26 @@ def run_single_target(cfg, profile, endpoint):
     print("=" * 72)
     print(f"Target URL: {url}")
     print(f"Method: {method}")
-    print(f"Total requests: {profile['total_requests']}")
+    print(f"Mode: {profile['mode']}")
+    if profile["mode"] == "duration":
+        print(
+            f"Duration: {profile['duration_seconds']}s | Max requests: {profile['max_requests']}"
+        )
+    else:
+        print(f"Total requests: {profile['total_requests']}")
     print(f"Concurrency: {profile['concurrency']}")
 
     with requests.Session() as session:
-        for _ in range(cfg["warmup_requests"]):
+        preflight_result = preflight(
+            session=session,
+            url=url,
+            method=method,
+            headers=cfg["headers"],
+            payload=profile["payload"],
+            timeout=timeout,
+        )
+
+        for _ in range(max(cfg["warmup_requests"] - 1, 0)):
             _ = one_request(
                 session=session,
                 url=url,
@@ -207,28 +273,15 @@ def run_single_target(cfg, profile, endpoint):
                 timeout=timeout,
             )
 
-        wall_start = time.perf_counter()
-        futures = []
-        results = []
-
-        with ThreadPoolExecutor(max_workers=profile["concurrency"]) as executor:
-            for _ in range(profile["total_requests"]):
-                futures.append(
-                    executor.submit(
-                        one_request,
-                        session,
-                        url,
-                        method,
-                        cfg["headers"],
-                        profile["payload"],
-                        timeout,
-                    )
-                )
-
-            for future in as_completed(futures):
-                results.append(future.result())
-
-        wall_elapsed_s = max(time.perf_counter() - wall_start, 0.001)
+        results, wall_elapsed_s = run_load(
+            session=session,
+            url=url,
+            method=method,
+            headers=cfg["headers"],
+            payload=profile["payload"],
+            timeout=timeout,
+            profile=profile,
+        )
 
     success = [r for r in results if r["ok"]]
     failures = [r for r in results if not r["ok"]]
@@ -259,6 +312,12 @@ def run_single_target(cfg, profile, endpoint):
         "target_tps_met": observed_tps >= cfg["target_tps"],
         "host_stats": collect_host_stats(cfg["include_cpu_memory"]),
         "failure_examples": failures[:5],
+        "preflight": {
+            "ok": preflight_result["ok"],
+            "status_code": preflight_result["status_code"],
+            "latency_ms": round(preflight_result["latency_ms"], 2),
+            "error": preflight_result["error"],
+        },
     }
 
     print("\nSUMMARY")
@@ -270,21 +329,23 @@ def run_single_target(cfg, profile, endpoint):
     print(f"Target 400ms met: {summary['target_finality_met']}")
     print(f"Target 54k TPS met: {summary['target_tps_met']}")
 
-    return summary
+    return summary, latencies
 
 
 def run_cycle():
     cfg, profile, targets = resolved_config()
-    target_summaries = [run_single_target(cfg, profile, endpoint) for endpoint in targets]
+    target_summaries = []
+    all_latencies = []
+    for endpoint in targets:
+        summary, latencies = run_single_target(cfg, profile, endpoint)
+        target_summaries.append(summary)
+        all_latencies.extend(latencies)
 
     total_requests = sum(item["requests_total"] for item in target_summaries)
     total_success = sum(item["requests_success"] for item in target_summaries)
     total_failed = sum(item["requests_failed"] for item in target_summaries)
-    all_latencies = []
     all_wall_time = 0.0
     for item in target_summaries:
-        if item["latency_ms_avg"] is not None:
-            all_latencies.append(item["latency_ms_avg"])
         all_wall_time += item["wall_time_seconds"]
 
     rollup = {
@@ -299,9 +360,9 @@ def run_cycle():
         "wall_time_seconds": round(all_wall_time, 3),
         "observed_tps": round(total_success / max(all_wall_time, 0.001), 2),
         "latency_ms_avg": round(statistics.mean(all_latencies), 2) if all_latencies else None,
-        "latency_ms_p50": None,
-        "latency_ms_p95": None,
-        "latency_ms_p99": None,
+        "latency_ms_p50": round(percentile(all_latencies, 50), 2) if all_latencies else None,
+        "latency_ms_p95": round(percentile(all_latencies, 95), 2) if all_latencies else None,
+        "latency_ms_p99": round(percentile(all_latencies, 99), 2) if all_latencies else None,
         "finality_target_ms": cfg["target_finality_ms"],
         "target_tps": cfg["target_tps"],
         "target_finality_met": False,
@@ -325,22 +386,24 @@ def persist(summary):
     with open(path, "w", encoding="utf-8") as handle:
         json.dump(summary, handle, indent=2)
 
-    tsv_path = "results.tsv"
+    tsv_path = os.getenv("HYPERSPACE_RESULTS_FILE", "results.tsv")
     tsv_exists = os.path.exists(tsv_path)
     with open(tsv_path, "a", encoding="utf-8") as handle:
         if not tsv_exists:
             handle.write(
-                "cycle\ttimestamp\tconcurrency\ttotal_requests\tsuccess_rate\tobserved_tps\tlatency_ms_avg\tlatency_ms_p95\ttarget_finality_met\ttarget_tps_met\n"
+                "cycle\ttimestamp\tmode\tconcurrency\ttotal_requests\tsuccess_rate\tobserved_tps\tlatency_ms_avg\tlatency_ms_p95\tlatency_ms_p99\ttarget_finality_met\ttarget_tps_met\n"
             )
         handle.write(
-            f"{cycle_num}\t{summary['timestamp']}\t{summary['load_profile']['concurrency']}\t"
+            f"{cycle_num}\t{summary['timestamp']}\t{summary['load_profile']['mode']}\t"
+            f"{summary['load_profile']['concurrency']}\t"
             f"{summary['requests_total']}\t{summary['success_rate']}\t{summary['observed_tps']}\t"
             f"{summary['latency_ms_avg']}\t{summary['latency_ms_p95']}\t"
+            f"{summary['latency_ms_p99']}\t"
             f"{summary['target_finality_met']}\t{summary['target_tps_met']}\n"
         )
 
     print(f"\nSaved: {path}")
-    print("Appended: results.tsv")
+    print(f"Appended: {tsv_path}")
 
 
 if __name__ == "__main__":

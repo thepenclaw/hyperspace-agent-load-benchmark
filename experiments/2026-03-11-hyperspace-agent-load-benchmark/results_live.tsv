@@ -1,0 +1,2 @@
+cycle	timestamp	mode	concurrency	total_requests	success_rate	observed_tps	latency_ms_avg	latency_ms_p95	latency_ms_p99	target_finality_met	target_tps_met
+14	2026-03-11T05:33:21.636252Z	duration	8	2000	1.0	329.16	23.87	48.42	88.73	True	False
