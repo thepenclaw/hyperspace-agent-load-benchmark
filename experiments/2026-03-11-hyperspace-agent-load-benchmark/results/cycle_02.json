@@ -1,0 +1,198 @@
+{
+  "timestamp": "2026-03-11T04:35:07.977232Z",
+  "config": {
+    "api_base": "https://agents.hyper.space",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    }
+  },
+  "load_profile": {
+    "total_requests": 10,
+    "concurrency": 2,
+    "method": "GET",
+    "endpoint": "/",
+    "payload": null
+  },
+  "targets": [
+    "/",
+    "/docs"
+  ],
+  "requests_total": 20,
+  "requests_success": 0,
+  "requests_failed": 20,
+  "success_rate": 0.0,
+  "wall_time_seconds": 0.007,
+  "observed_tps": 0.0,
+  "latency_ms_avg": null,
+  "latency_ms_p50": null,
+  "latency_ms_p95": null,
+  "latency_ms_p99": null,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": false,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": null,
+    "mem_percent": null,
+    "mem_used_mb": null,
+    "note": "psutil not installed"
+  },
+  "target_results": [
+    {
+      "timestamp": "2026-03-11T04:35:07.972453Z",
+      "config": {
+        "api_base": "https://agents.hyper.space",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        }
+      },
+      "load_profile": {
+        "total_requests": 10,
+        "concurrency": 2,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/",
+      "requests_total": 10,
+      "requests_success": 0,
+      "requests_failed": 10,
+      "success_rate": 0.0,
+      "wall_time_seconds": 0.004,
+      "observed_tps": 0.0,
+      "latency_ms_avg": null,
+      "latency_ms_p50": null,
+      "latency_ms_p95": null,
+      "latency_ms_p99": null,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": false,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": null,
+        "mem_percent": null,
+        "mem_used_mb": null,
+        "note": "psutil not installed"
+      },
+      "failure_examples": [
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.7810830000000019,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.7112910000000028,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.6115840000000122,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.8554999999999952,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.6737500000000007,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-11T04:35:07.977179Z",
+      "config": {
+        "api_base": "https://agents.hyper.space",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        }
+      },
+      "load_profile": {
+        "total_requests": 10,
+        "concurrency": 2,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/docs",
+      "requests_total": 10,
+      "requests_success": 0,
+      "requests_failed": 10,
+      "success_rate": 0.0,
+      "wall_time_seconds": 0.003,
+      "observed_tps": 0.0,
+      "latency_ms_avg": null,
+      "latency_ms_p50": null,
+      "latency_ms_p95": null,
+      "latency_ms_p99": null,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": false,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": null,
+        "mem_percent": null,
+        "mem_used_mb": null,
+        "note": "psutil not installed"
+      },
+      "failure_examples": [
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.5319170000000067,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: /docs (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.8566660000000059,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: /docs (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.531458999999998,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: /docs (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.49825000000000563,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: /docs (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        },
+        {
+          "ok": false,
+          "status_code": null,
+          "latency_ms": 0.5009169999999896,
+          "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: /docs (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+        }
+      ]
+    }
+  ]
+}

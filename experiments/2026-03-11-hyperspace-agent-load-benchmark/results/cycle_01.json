@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-03-11T04:29:48.652336Z",
+  "config": {
+    "api_base": "https://agents.hyper.space",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    }
+  },
+  "load_profile": {
+    "total_requests": 120,
+    "concurrency": 8,
+    "method": "GET",
+    "endpoint": "/",
+    "payload": null
+  },
+  "requests_total": 120,
+  "requests_success": 0,
+  "requests_failed": 120,
+  "success_rate": 0.0,
+  "wall_time_seconds": 0.035,
+  "observed_tps": 0.0,
+  "latency_ms_avg": null,
+  "latency_ms_p50": null,
+  "latency_ms_p95": null,
+  "latency_ms_p99": null,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": false,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": null,
+    "mem_percent": null,
+    "mem_used_mb": null,
+    "note": "psutil not installed"
+  },
+  "failure_examples": [
+    {
+      "ok": false,
+      "status_code": null,
+      "latency_ms": 1.567625000000017,
+      "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    {
+      "ok": false,
+      "status_code": null,
+      "latency_ms": 0.6283749999999588,
+      "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    {
+      "ok": false,
+      "status_code": null,
+      "latency_ms": 1.9136249999999744,
+      "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    {
+      "ok": false,
+      "status_code": null,
+      "latency_ms": 1.1807500000000082,
+      "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    {
+      "ok": false,
+      "status_code": null,
+      "latency_ms": 2.834667000000013,
+      "error": "HTTPSConnectionPool(host='agents.hyper.space', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='agents.hyper.space', port=443): Failed to resolve 'agents.hyper.space' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    }
+  ]
+}

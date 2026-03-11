@@ -1,0 +1,3 @@
+cycle	timestamp	concurrency	total_requests	success_rate	observed_tps	latency_ms_avg	latency_ms_p95	target_finality_met	target_tps_met
+1	2026-03-11T04:29:48.652336Z	8	120	0.0	0.0	None	None	False	False
+2	2026-03-11T04:35:07.977232Z	2	20	0.0	0.0	None	None	False	False

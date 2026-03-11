@@ -1,0 +1,11 @@
+cycle	timestamp	score	avg_time	completeness	config
+1	2026-03-10T23:03:14.899427	0.204	3.27	0.665	{"wait_until": "networkidle", "timeout": 30000, "headless": true, "viewport": {"width": 1280, "height": 720}}
+2	2026-03-10T23:18:47.515919	0.357	1.89	0.673	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 1280, "height": 720}}
+3	2026-03-10T23:34:14.167574	0.406	1.66	0.673	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 1280, "height": 720}}
+4	2026-03-10T23:49:45.090928	0.371	1.94	0.719	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 375, "height": 667}}
+5	2026-03-11T00:05:12.191193	0.401	1.71	0.686	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 375, "height": 667}}
+6	2026-03-11T00:20:50.667622	0.278	2.68	0.746	{"wait_until": "load", "timeout": 60000, "headless": true, "viewport": {"width": 1280, "height": 720}}
+7	2026-03-11T00:36:30.711082	0.221	2.92	0.643	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": false, "viewport": {"width": 1280, "height": 720}}
+8	2026-03-11T00:52:00.915014	0.341	1.97	0.672	{"wait_until": "domcontentloaded", "timeout": 30000, "headless": true, "viewport": {"width": 1280, "height": 720}}
+9	2026-03-11T01:07:31.796942	0.340	1.98	0.672	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 1920, "height": 1080}}
+10	2026-03-11T01:23:01.656667	0.364	1.85	0.672	{"wait_until": "domcontentloaded", "timeout": 60000, "headless": true, "viewport": {"width": 1280, "height": 720}}
