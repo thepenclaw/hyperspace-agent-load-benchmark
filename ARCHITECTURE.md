@@ -1,59 +1,54 @@
-# BYOC Architecture
+# Architecture
 
-## System Design
+## Overview
 
-### Overview
+This repository runs repeatable endpoint-level load tests for Hyperspace workflows.
 
-BYOC (Bring Your Own Compute) pairs cloud-based LLM agents with local Apple Silicon Macs for zero-cost automated research.
+Core idea:
+- Configure target endpoint(s)
+- Execute count or duration load cycles
+- Persist per-cycle JSON + TSV rollups
+- Compare runs over time
 
-### Components
+## Components
 
-| Component | Role | Location | Cost |
-|-----------|------|----------|------|
-| **LLM Agent** | Designs experiments, analyzes results | Cloud (OpenClaw) | Free/cheap built-in |
-| **GitHub** | Coordination, version control | Cloud | Free tier |
-| **M-series Mac** | Execute experiments | Local (your machine) | $0 (you own it) |
+| Component | Role |
+|-----------|------|
+| `run.py` | Benchmark engine (requests, concurrency, metrics, export) |
+| `live_protocol.sh` | Standardized trial + sweep + soak sequence |
+| `auto_run.sh` | Repeated cycle automation |
+| `results/cycle_*.json` | Raw cycle artifacts |
+| `results.tsv` / `results_node_local.tsv` | Condensed metrics table |
 
-### Data Flow
+## Benchmark Flow
 
-```
-Cloud LLM (Designs) ←──────→ GitHub ←──────→ M4 Mac (Executes)
-        ↑                      │                  │
-        └──────────────────────┴──────────────────┘
-                    (15 min cycles)
-```
+1. Preflight request checks endpoint reachability.
+2. Warmup executes a small request sample.
+3. Load runner executes either:
+   - `count` mode (`total_requests`)
+   - `duration` mode (`duration_seconds`, optional `max_requests`)
+4. Metrics are computed:
+   - `observed_tps`
+   - `latency_ms_avg`, `p50`, `p95`, `p99`
+   - `success_rate`
+   - host CPU/memory snapshot
+5. Artifacts are written for each cycle and appended to TSV.
 
-### Cycle Walkthrough
+## Config Surface
 
-1. **LLM designs experiment** → Pushes config to GitHub
-2. **Mac pulls config** → Runs experiment
-3. **Mac pushes results** → Back to GitHub
-4. **LLM analyzes** → Designs next cycle
-5. **Repeat** for 10 cycles
+Primary env controls:
+- `HYPERSPACE_API_BASE`
+- `HYPERSPACE_ENDPOINT` or `HYPERSPACE_ENDPOINTS`
+- `HYPERSPACE_METHOD`
+- `HYPERSPACE_CONCURRENCY`
+- `HYPERSPACE_TOTAL_REQUESTS`
+- `HYPERSPACE_MODE` (`count` / `duration`)
+- `HYPERSPACE_DURATION_SECONDS`
+- `HYPERSPACE_MAX_REQUESTS`
+- `HYPERSPACE_BEARER_TOKEN` or `HYPERSPACE_API_KEY`
 
-### Communication
+## Operating Modes
 
-Git acts as message queue:
-- Push = Send message
-- Pull = Receive message
-- No webhooks needed
-- Works with intermittent connectivity
-
-### Date-Wise Structure
-
-```
-experiments/
-├── 2026-03-10-playwright-m4-optimization/
-├── 2026-04-15-mlx-quantization-study/
-└── YYYY-MM-DD-descriptive-name/
-```
-
-**Benefits:**
-- Natural chronological ordering
-- Easy to find past work
-- Multiple concurrent studies
-- Clear versioning
-
----
-
-*See README.md for usage instructions*
+- Public endpoint profiling (hosted service latency envelope)
+- Node-local profiling (`127.0.0.1:18080`) to isolate local runtime behavior
+- Authenticated endpoint profiling when canonical protected routes are available

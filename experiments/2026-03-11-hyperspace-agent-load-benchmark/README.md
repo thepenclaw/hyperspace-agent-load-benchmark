@@ -1,6 +1,6 @@
 # Hyperspace Agent Load Benchmark (BYOC)
 
-Cycle-based endpoint benchmark adapted from the Playwright autoresearch pattern.
+Cycle-based endpoint benchmark for Hyperspace-style agent systems.
 
 ## Purpose
 
