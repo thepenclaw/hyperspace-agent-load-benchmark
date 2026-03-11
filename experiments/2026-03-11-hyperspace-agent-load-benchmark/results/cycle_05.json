@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-03-11T05:04:20.827053Z",
+  "config": {
+    "api_base": "https://agents.hyper.space",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    }
+  },
+  "load_profile": {
+    "total_requests": 120,
+    "concurrency": 4,
+    "method": "GET",
+    "endpoint": "/",
+    "payload": null
+  },
+  "targets": [
+    "/"
+  ],
+  "requests_total": 120,
+  "requests_success": 120,
+  "requests_failed": 0,
+  "success_rate": 1.0,
+  "wall_time_seconds": 0.841,
+  "observed_tps": 142.69,
+  "latency_ms_avg": 27.74,
+  "latency_ms_p50": null,
+  "latency_ms_p95": null,
+  "latency_ms_p99": null,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": true,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": 4.6,
+    "mem_percent": 56.7,
+    "mem_used_mb": 8281.44
+  },
+  "target_results": [
+    {
+      "timestamp": "2026-03-11T05:04:20.510971Z",
+      "config": {
+        "api_base": "https://agents.hyper.space",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        }
+      },
+      "load_profile": {
+        "total_requests": 120,
+        "concurrency": 4,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/",
+      "requests_total": 120,
+      "requests_success": 120,
+      "requests_failed": 0,
+      "success_rate": 1.0,
+      "wall_time_seconds": 0.841,
+      "observed_tps": 142.61,
+      "latency_ms_avg": 27.74,
+      "latency_ms_p50": 22.18,
+      "latency_ms_p95": 48.04,
+      "latency_ms_p99": 147.33,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": true,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": 5.3,
+        "mem_percent": 56.7,
+        "mem_used_mb": 8281.45
+      },
+      "failure_examples": []
+    }
+  ]
+}
