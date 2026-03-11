@@ -1,0 +1,105 @@
+{
+  "timestamp": "2026-03-11T06:00:28.571940Z",
+  "config": {
+    "api_base": "http://127.0.0.1:18080",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    },
+    "username": null,
+    "password": null
+  },
+  "load_profile": {
+    "mode": "count",
+    "total_requests": 120,
+    "duration_seconds": 120,
+    "max_requests": 50000,
+    "concurrency": 8,
+    "method": "GET",
+    "endpoint": "/api/v1/state",
+    "payload": null
+  },
+  "targets": [
+    "/api/v1/state"
+  ],
+  "requests_total": 120,
+  "requests_success": 120,
+  "requests_failed": 0,
+  "success_rate": 1.0,
+  "wall_time_seconds": 0.059,
+  "observed_tps": 2033.9,
+  "latency_ms_avg": 3.03,
+  "latency_ms_p50": 2.79,
+  "latency_ms_p95": 5.89,
+  "latency_ms_p99": 6.87,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": true,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": 10.7,
+    "mem_percent": 55.5,
+    "mem_used_mb": 8063.58
+  },
+  "target_results": [
+    {
+      "timestamp": "2026-03-11T06:00:28.261622Z",
+      "config": {
+        "api_base": "http://127.0.0.1:18080",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        },
+        "username": null,
+        "password": null
+      },
+      "load_profile": {
+        "mode": "count",
+        "total_requests": 120,
+        "duration_seconds": 120,
+        "max_requests": 50000,
+        "concurrency": 8,
+        "method": "GET",
+        "endpoint": "/api/v1/state",
+        "payload": null
+      },
+      "endpoint": "/api/v1/state",
+      "requests_total": 120,
+      "requests_success": 120,
+      "requests_failed": 0,
+      "success_rate": 1.0,
+      "wall_time_seconds": 0.059,
+      "observed_tps": 2045.84,
+      "latency_ms_avg": 3.03,
+      "latency_ms_p50": 2.79,
+      "latency_ms_p95": 5.89,
+      "latency_ms_p99": 6.87,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": true,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": 9.5,
+        "mem_percent": 55.5,
+        "mem_used_mb": 8062.22
+      },
+      "failure_examples": [],
+      "preflight": {
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 3.92,
+        "error": null
+      }
+    }
+  ]
+}

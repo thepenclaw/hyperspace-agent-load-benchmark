@@ -1,0 +1,160 @@
+{
+  "timestamp": "2026-03-11T06:15:40.718758Z",
+  "config": {
+    "api_base": "http://127.0.0.1:18080",
+    "health_endpoint": "/",
+    "request_timeout_seconds": 10,
+    "warmup_requests": 5,
+    "include_cpu_memory": true,
+    "target_finality_ms": 400,
+    "target_tps": 54000,
+    "headers": {
+      "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+    },
+    "username": null,
+    "password": null
+  },
+  "load_profile": {
+    "mode": "duration",
+    "total_requests": 120,
+    "duration_seconds": 20,
+    "max_requests": 120000,
+    "concurrency": 32,
+    "method": "GET",
+    "endpoint": "/",
+    "payload": null
+  },
+  "targets": [
+    "/health",
+    "/api/v1/state"
+  ],
+  "requests_total": 93527,
+  "requests_success": 93527,
+  "requests_failed": 0,
+  "success_rate": 1.0,
+  "wall_time_seconds": 40.016,
+  "observed_tps": 2337.24,
+  "latency_ms_avg": 9.91,
+  "latency_ms_p50": 9.37,
+  "latency_ms_p95": 16.7,
+  "latency_ms_p99": 20.75,
+  "finality_target_ms": 400,
+  "target_tps": 54000,
+  "target_finality_met": true,
+  "target_tps_met": false,
+  "host_stats": {
+    "cpu_percent": 10.1,
+    "mem_percent": 52.7,
+    "mem_used_mb": 7612.27
+  },
+  "target_results": [
+    {
+      "timestamp": "2026-03-11T06:15:19.997755Z",
+      "config": {
+        "api_base": "http://127.0.0.1:18080",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        },
+        "username": null,
+        "password": null
+      },
+      "load_profile": {
+        "mode": "duration",
+        "total_requests": 120,
+        "duration_seconds": 20,
+        "max_requests": 120000,
+        "concurrency": 32,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/health",
+      "requests_total": 46925,
+      "requests_success": 46925,
+      "requests_failed": 0,
+      "success_rate": 1.0,
+      "wall_time_seconds": 20.008,
+      "observed_tps": 2345.32,
+      "latency_ms_avg": 9.89,
+      "latency_ms_p50": 9.35,
+      "latency_ms_p95": 16.63,
+      "latency_ms_p99": 20.72,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": true,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": 18.0,
+        "mem_percent": 53.1,
+        "mem_used_mb": 7680.3
+      },
+      "failure_examples": [],
+      "preflight": {
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 3.92,
+        "error": null
+      }
+    },
+    {
+      "timestamp": "2026-03-11T06:15:40.376223Z",
+      "config": {
+        "api_base": "http://127.0.0.1:18080",
+        "health_endpoint": "/",
+        "request_timeout_seconds": 10,
+        "warmup_requests": 5,
+        "include_cpu_memory": true,
+        "target_finality_ms": 400,
+        "target_tps": 54000,
+        "headers": {
+          "User-Agent": "BYOC-Hyperspace-Benchmark/1.0"
+        },
+        "username": null,
+        "password": null
+      },
+      "load_profile": {
+        "mode": "duration",
+        "total_requests": 120,
+        "duration_seconds": 20,
+        "max_requests": 120000,
+        "concurrency": 32,
+        "method": "GET",
+        "endpoint": "/",
+        "payload": null
+      },
+      "endpoint": "/api/v1/state",
+      "requests_total": 46602,
+      "requests_success": 46602,
+      "requests_failed": 0,
+      "success_rate": 1.0,
+      "wall_time_seconds": 20.008,
+      "observed_tps": 2329.19,
+      "latency_ms_avg": 9.92,
+      "latency_ms_p50": 9.37,
+      "latency_ms_p95": 16.76,
+      "latency_ms_p99": 20.81,
+      "finality_target_ms": 400,
+      "target_tps": 54000,
+      "target_finality_met": true,
+      "target_tps_met": false,
+      "host_stats": {
+        "cpu_percent": 10.6,
+        "mem_percent": 52.7,
+        "mem_used_mb": 7611.91
+      },
+      "failure_examples": [],
+      "preflight": {
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 4.12,
+        "error": null
+      }
+    }
+  ]
+}
